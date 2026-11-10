@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎓 MAJU 3D Smart Campus Parking System
 
 > **Course:** Learning in the Age of AI (Assignment - 10 Points)  
@@ -123,3 +124,6 @@ maju-3d-smart-campus-parking/
 - **Institution:** Mohammad Ali Jinnah University (MAJU), Karachi
 - **Course:** Learning in the Age of AI
 - **Assignment Grade Weight:** 10 Points
+=======
+# 3D-smart-parking
+>>>>>>> aa91de3a7c4347316dcf5f7969ff3284834b8879
