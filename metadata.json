@@ -1,0 +1,6 @@
+{
+  "name": "MAJU 3D Smart Campus Parking",
+  "description": "Futuristic 3D Isometric Smart Parking System for Mohammad Ali Jinnah University (Shahrah-e-Faisal Campus, Karachi) adjacent to C-Block Building.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

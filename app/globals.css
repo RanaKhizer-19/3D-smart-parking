@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer utilities {
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .perspective-1200 {
+    perspective: 1200px;
+  }
+  .perspective-1600 {
+    perspective: 1600px;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+/* Custom asphalt texture and road markings */
+.asphalt-texture {
+  background-color: #1a2230;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px, 48px 48px, 48px 48px;
+}
+
+/* Yellow Hazard warning stripes */
+.hazard-stripes {
+  background: repeating-linear-gradient(
+    45deg,
+    #f59e0b,
+    #f59e0b 12px,
+    #111827 12px,
+    #111827 24px
+  );
+}
+
+.hazard-stripes-subtle {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(245, 158, 11, 0.8),
+    rgba(245, 158, 11, 0.8) 8px,
+    rgba(15, 23, 42, 0.8) 8px,
+    rgba(15, 23, 42, 0.8) 16px
+  );
+}
+
+/* 3D Extrusion Shadows and Glows */
+.shadow-neon-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35), inset 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.shadow-neon-red {
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.45), inset 0 0 15px rgba(239, 68, 68, 0.25);
+}
+
+.shadow-cblock-3d {
+  box-shadow: 
+    -25px 25px 45px rgba(0, 0, 0, 0.65),
+    -10px 10px 20px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.shadow-lot-isometric {
+  box-shadow: 
+    -35px 40px 60px -10px rgba(0, 0, 0, 0.75),
+    -15px 20px 30px -5px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+/* 3D Vehicle Extrusion Animation */
+@keyframes vehiclePopUp {
+  0% {
+    transform: translateZ(0px) scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: translateZ(48px) scale(1.22);
+    opacity: 1;
+  }
+  100% {
+    transform: translateZ(40px) scale(1.15);
+    opacity: 1;
+  }
+}
+
+.animate-vehicle-pop {
+  animation: vehiclePopUp 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}

@@ -1,0 +1,132 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAJU 3D Smart Parking System</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background: radial-gradient(circle, #2c3e50 0%, #0f172a 100%); padding: 20px; color: #fff; margin: 0; min-height: 100vh; overflow-x: hidden; }
+        .header { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); max-width: 700px; margin: 0 auto 20px auto; padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        h1 { margin: 0; font-size: 28px; color: #f1f2f6; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .tagline { font-size: 13px; color: #fbc531; font-weight: bold; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .loc { font-size: 14px; margin-top: 8px; color: #a4b0be; }
+
+        .counter-box { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 12px 30px; border-radius: 30px; display: inline-block; margin-bottom: 40px; font-weight: bold; border: 1px solid #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+        .count { color: #38bdf8; font-size: 22px; }
+
+        /* --- 3D CANVAS & VIEWPORT --- */
+        .scene-container { perspective: 1000px; padding: 40px 0; display: flex; justify-content: center; align-items: center; }
+        
+        /* Pure layout ko Isometric tilted look dene ka jadu */
+        .parking-lot-3d { background: #334155; width: 550px; padding: 30px; border-radius: 20px; transform: rotateX(60deg) rotateZ(-35deg); transform-style: preserve-3d; box-shadow: -20px 20px 30px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.4); border: 6px solid #fbc531; position: relative; transition: all 0.5s ease; }
+        
+        /* C-Block Landmark Text in 3D Space */
+        .c-block-landmark { position: absolute; top: -50px; left: 35%; background: #002f6c; color: white; font-weight: bold; padding: 8px 20px; border-radius: 6px; font-size: 16px; border: 2px solid #fff; transform: rotateX(-10deg) translateZ(40px); box-shadow: 0 10px 15px rgba(0,0,0,0.3); text-transform: uppercase; }
+
+        .zone-divider { color: #94a3b8; font-size: 14px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; margin: 25px 0 15px 0; border-bottom: 2px dashed rgba(255,255,255,0.2); padding-bottom: 5px; transform: translateZ(5px); }
+
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; transform-style: preserve-3d; }
+
+        /* --- 3D EXTRUDED SLOTS --- */
+        .slot-3d { background: #10b981; height: 100px; border-radius: 8px; border: 3px dashed #ffffff; cursor: pointer; position: relative; transform-style: preserve-3d; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 13px; }
+        
+        /* Give height to slots when hovered */
+        .slot-3d:hover { transform: translateZ(10px); background: #059669; box-shadow: -5px 5px 15px rgba(0,0,0,0.4); }
+
+        .slot-name { transform: translateZ(15px); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .status-tag { font-size: 10px; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 10px; margin-top: 5px; transform: translateZ(15px); }
+
+        /* 3D Vehicle Placement Pop Effect */
+        .car-node { font-size: 42px; position: absolute; top: 15px; opacity: 0; transform: translateZ(0px) scale(0.5); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
+
+        /* --- OCCUPIED STATE CHANGES --- */
+        .slot-3d.occupied { background: #ef4444 !important; border-color: #fee2e2; }
+        .slot-3d.occupied .car-node { opacity: 1; transform: translateZ(35px) scale(1.2); text-shadow: -10px 10px 10px rgba(0,0,0,0.5); }
+        .slot-3d.occupied .slot-name { opacity: 0.4; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🎓 MAJU Smart Campus Parking</h1>
+        <div class="tagline">Interactive 3D Space Portal</div>
+        <div class="loc">📍 Location Anchor: Adjacent to <strong>C-Block Main Ground</strong></div>
+    </div>
+
+    <div class="counter-box">
+        Available Slots Area Feed: <span id="available-count" class="count">6</span> / 6 Slots
+    </div>
+
+    <!-- 3D Scene Viewport -->
+    <div class="scene-container">
+        <div class="parking-lot-3d">
+            
+            <!-- C-Block Virtual Wall Anchor -->
+            <div class="c-block-landmark">🏢 C - BLOCK WALL</div>
+
+            <!-- Faculty Lane -->
+            <div class="zone-divider">Faculty Lanes</div>
+            <div class="grid">
+                <div class="slot-3d" onclick="reserve3D(this, '🚗')">
+                    <div class="car-node">🚗</div>
+                    <div class="slot-name">C-FAC 01</div>
+                    <div class="status-tag">Available</div>
+                </div>
+                <div class="slot-3d" onclick="reserve3D(this, '🚗')">
+                    <div class="car-node">🚗</div>
+                    <div class="slot-name">C-FAC 02</div>
+                    <div class="status-tag">Available</div>
+                </div>
+                <div class="slot-3d" onclick="reserve3D(this, '🚗')">
+                    <div class="car-node">🚗</div>
+                    <div class="slot-name">C-FAC 03</div>
+                    <div class="status-tag">Available</div>
+                </div>
+            </div>
+
+            <!-- Student Lane -->
+            <div class="zone-divider">Student Lanes</div>
+            <div class="grid">
+                <div class="slot-3d" onclick="reserve3D(this, '🏍️')">
+                    <div class="car-node">🏍️</div>
+                    <div class="slot-name">C-STU 01</div>
+                    <div class="status-tag">Available</div>
+                </div>
+                <div class="slot-3d" onclick="reserve3D(this, '🚗')">
+                    <div class="car-node">🚗</div>
+                    <div class="slot-name">C-STU 02</div>
+                    <div class="status-tag">Available</div>
+                </div>
+                <div class="slot-3d" onclick="reserve3D(this, '🏍️')">
+                    <div class="car-node">🏍️</div>
+                    <div class="slot-name">C-STU 03</div>
+                    <div class="status-tag">Available</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let availableSlots = 6;
+
+        function reserve3D(element, vehicle) {
+            let statusTag = element.querySelector('.status-tag');
+            
+            if (!element.classList.contains('occupied')) {
+                element.classList.add('occupied');
+                statusTag.innerText = "Occupied";
+                availableSlots--;
+            } else {
+                element.classList.remove('occupied');
+                statusTag.innerText = "Available";
+                availableSlots++;
+            }
+            
+            document.getElementById('available-count').innerText = availableSlots;
+        }
+    </script>
+</body>
+</html>
